@@ -16,12 +16,22 @@ builds by hash when it is created, and the OutLayer secret that holds the
 tender-key master secret is bound to that same hash, so a different build reads
 no secret and opens no bid.
 
-| File | SHA-256 | Bytes | Built from |
+| File | SHA-256 | Bytes | Status |
 |---|---|---|---|
-| `evaluator/evaluator-v0.1.0-d7a2b011.wasm` | `d7a2b0113ca9e3664ae2deaf8e8fcec58511d4f0d6f4a453107d105142175255` | 2,089,826 | tag `evaluator-v0.1.0`, `cargo build -p evaluator-wasm --target wasm32-wasip2 --release` |
+| `evaluator/evaluator-v0.1.0-b5e34a07.wasm` | `b5e34a07e647059ef89753b63aeea17bd1a7ccfae17db6ecc0a2190be0811fb6` | 2,090,095 | **current** |
+| `evaluator/evaluator-v0.1.0-d7a2b011.wasm` | `d7a2b0113ca9e3664ae2deaf8e8fcec58511d4f0d6f4a453107d105142175255` | 2,089,826 | superseded |
 
-The file name carries the first 4 bytes of the hash so that one path is always
-one build.
+Both are tag `evaluator-v0.1.0`, built with
+`cargo build -p evaluator-wasm --target wasm32-wasip2 --release`. The file name
+carries the first 4 bytes of the hash so that one path is always one build; a
+superseded file is kept because the measurements recorded against it name that
+exact hash.
+
+`b5e34a07` differs from `d7a2b011` by four fixes found in review: the chat id
+returned by the model API is percent-encoded before it goes into a signature
+URL, the bundle store must be `https`, a missing API key is reported as a
+configuration error rather than a model outage, and the retry for the bundle
+upload lives only in the store that knows which failures are worth repeating.
 
 ## g1/, g2/, g3/
 
